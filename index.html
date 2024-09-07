@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather app</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="card" ><div class="search">
+        <input type="text" placeholder="Enter City">
+        <button ><img src="D:\weather app\search.png"></button>
+    </div>
+    <div class="weather"><img src="D:\rain.png" class="weathericon">
+    <h1 class="temp">22°c</h1>
+<h2 class="city">Chennai</h2>
+<div class="details">
+    <div class="col">
+        <img src="D:\humidity.png">
+        <div><p class="humidity">50%</p>
+        <p>humidity</p>
+    </div>
+    </div>
+    <div class="col">
+        <img src="D:\wind.png">
+        <div><p class="wind">15 km/h</p>
+        <p>Wind Speed</p>
+    </div>
+    </div>
+</div></div>
+    </div>
+    <script>
+        const apikey = "45796ecaf09e7373c4b099a5d1d4d96d";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+        const searchbox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+    
+        async function checkWeather(city) {
+            if (!city) {
+                alert("Please enter a city name");
+                return;
+            }
+    
+            try {
+                const response = await fetch(`${apiUrl}${city}&appid=${apikey}`);
+    
+                // Check if the response is okay (status in the range 200-299)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+    
+                const data = await response.json();
+                console.log(data);
+    
+                // Update the HTML with weather data
+                document.querySelector(".city").textContent = data.name;
+                document.querySelector(".temp").textContent = data.main.temp + "°C";
+                document.querySelector(".wind").textContent = data.wind.speed + " km/h";
+                document.querySelector(".humidity").textContent = data.main.humidity + "%";
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                alert('Error fetching weather data. Please try again.');
+            }
+        }
+    
+        searchBtn.addEventListener("click", () => {
+            checkWeather(searchbox.value.trim());
+        });
+    </script>
+    
+    
+
+    
+
+    
+    
+</body>
+</html>
